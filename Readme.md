@@ -10,9 +10,10 @@ node.js's module to extract data from Microsoft Excel File
 *  only cell data
 
 ## Usage
-
+```js
     xl.open('./testDate.xls', function(err,bk){
         if(err) {console.log(err.name, err.message); return;}
         var sht = bk.sheetByIndex(0);
         console.log(sht.cell(0,0));
     });
+```
