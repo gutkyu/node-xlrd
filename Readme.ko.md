@@ -10,9 +10,10 @@ Microsoft Excel 파일에서 자료를 추출하기 위한 node.js 모듈
 *   셀 포맷은 향후 지원 예정
 
 ## 사용방법
-
+```js
     xl.open('./testDate.xls', function(err,bk){
         if(err) {console.log(err.name, err.message); return;}
         var sht = bk.sheetByIndex(0);
         console.log(sht.cell(0,0));
     });
+```
