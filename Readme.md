@@ -11,6 +11,7 @@ node.js's module to extract data from Microsoft Excel File
 
 ## Usage
 ```js
+    var xl = require('node-xlrd');
     xl.open('./testDate.xls', function(err,bk){
         if(err) {console.log(err.name, err.message); return;}
         var sht = bk.sheetByIndex(0);
