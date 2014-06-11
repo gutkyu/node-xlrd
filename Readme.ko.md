@@ -11,6 +11,7 @@ Microsoft Excel 파일에서 자료를 추출하기 위한 node.js 모듈
 
 ## 사용방법
 ```js
+    var xl = require('node-xlrd');
     xl.open('./testDate.xls', function(err,bk){
         if(err) {console.log(err.name, err.message); return;}
         var sht = bk.sheetByIndex(0);
