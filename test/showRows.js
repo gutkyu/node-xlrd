@@ -28,7 +28,7 @@ function show(bk, nshow, printit){
 		console.log(util.format("sheet %d: name = %s; nrows = %d; ncols = %d",shx, sh.name, sh.nrows, sh.ncols));
 		if (nrows && ncols){
 			// Beat the bounds
-			for(rowx = 0 ; i < nrows ; rowx++){
+			for(rowx = 0 ; rowx < nrows ; rowx++){
 				var nc = sh.rowLength(rowx);
 				if (nc){
 					var _junk = sh.rowTypes(rowx)[nc-1];
