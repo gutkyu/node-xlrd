@@ -1,0 +1,39 @@
+{
+  "name": "node-xlrd",
+  "version": "0.1.0",
+  "description": "node.js's module to extract data from Microsoft Excel File",
+  "main": "./lib/node-xlrd.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "iconv-lite": "~0.2.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gutkyu/node-xlrd.git"
+  },
+  "keywords": [
+    "excel",
+    "xls",
+    "spreadsheet",
+    "nodejs",
+    "node.js"
+  ],
+  "author": {
+    "name": "Sangkyu Jung"
+  },
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/gutkyu/node-xlrd/issues"
+  },
+  "homepage": "https://github.com/gutkyu/node-xlrd",
+  "readme": "# node-xlrd\r\nnode.js's module to extract data from Microsoft Excel File\r\n\r\n## Features\r\n*  based on the python module xlrd http://www.python-excel.org/ \r\n*  pure javascript on node.js\r\n\r\n##  Status\r\n*  supported file format : Excel 2 ~ 2003 File(.xls)\r\n*  only cell data\r\n\r\n## Usage\r\n\r\n    xl.open('./testDate.xls', function(err,bk){\r\n        if(err) {console.log(err.name, err.message); return;}\r\n        var sht = bk.sheetByIndex(0);\r\n        console.log(sht.cell(0,0));\r\n    });\r\n",
+  "readmeFilename": "Readme.md",
+  "_id": "node-xlrd@0.1.0",
+  "_from": "node-xlrd@"
+}
