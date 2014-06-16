@@ -20,7 +20,7 @@ function show(bk, nshow, printit){
 			print("0x%04x %7d" % (k, v))
 	}
 	*/
-	for( shx = 0 ;shx <  bk.nsheets; shx++){
+	for( shx = 0 ;shx <  bk.sheetCount; shx++){
 		var sh = bk.sheetByIndex(shx);
 		var nrows = sh.nrows, ncols = sh.ncols;
 		
@@ -49,12 +49,12 @@ function show(bk, nshow, printit){
 }
 
 function showHeader(bk){
-	console.log(util.format("BIFF version: %s; datemode: %s",xl.toBiffVersionText(bk.biffVersion), bk.datemode));
-	console.log(util.format("codepage: %s (encoding: %s); countries: %s",bk.codepage, bk.encoding, bk.countries));
+	console.log(util.format("BIFF version: %s; dateMode: %s",xl.toBiffVersionText(bk.biffVersion), bk.dateMode));
+	console.log(util.format("codepage: %s (encoding: %s); countries: %s",bk.codePage, bk.encoding, bk.countries));
 	console.log(util.format("Last saved by: %s",bk.user_name));
-	console.log(util.format("Number of data sheets: %d" ,bk.nsheets));
+	console.log(util.format("Number of data sheets: %d" ,bk.sheetCount));
 	console.log(util.format("Ragged rows: %d" , bk.ragged_rows));
-	if (bk.formatting_info)
+	if (bk.formattingInfo)
 		console.log(util.format("FORMATs: %d, FONTs: %d, XFs: %d",len(bk.format_list), len(bk.font_list), bk.xf_list.length));
 	//if (! options.suppress_timing)
 	//	console.log(util.format("Load time: %.2f seconds (stage 1) %.2f seconds (stage 2)",bk.load_time_stage_1, bk.load_time_stage_2));
@@ -66,7 +66,7 @@ function showRow(bk, sh, rowx, colLen, printit){
             colLen = sh.rowLength(rowx).length;
         if (!colLen) return;
         //if (printit) ;
-        if (bk.formatting_info)
+        if (bk.formattingInfo)
 			getRowData(bk, sh, rowx, colLen).forEach(function(x){
 				var colx=x[0], ty=x[1], val=x[2], cxfx=x[3];
 				if (printit)
@@ -83,14 +83,14 @@ function showRow(bk, sh, rowx, colLen, printit){
 
 function getRowData(bk, sh, rowx, colLen){
 	var result = [];
-	var dmode = bk.datemode;
+	var dmode = bk.dateMode;
 	var ctys = sh.rowTypes(rowx);
 	var cvals = sh.rowValues(rowx);
 	for(colx = 0; colx <colLen; colx++){
 		var cty = ctys[colx];
 		var cval = cvals[colx];
 		var cxfx = null;
-		if (bk.formatting_info)
+		if (bk.formattingInfo)
 			cxfx = str(sh.cellXFIndex(rowx, colx));
 		else
 			cxfx = '';

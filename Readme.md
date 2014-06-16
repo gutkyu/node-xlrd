@@ -9,6 +9,22 @@ node.js's module to extract data from Microsoft Excel File
 *  supported file format : Excel 2 ~ 2003 File(.xls)
 *  only cell data
 
+## Api
+	openWorkbook(fd, options, callback)
+		options : onDemand
+### Class Workbook
+	.biffVersion
+	.codePage
+	.encoding
+	.countries
+	.sheetCount
+	.sheets
+	.sheetNames
+	.sheetByIndex(sheetIndex)
+	.sheetByName(sheetName)
+	.sheetLoaded(sheetId)
+	.unloadSheet(sheetId)
+
 ## Usage
 ```js
     var xl = require('node-xlrd');
