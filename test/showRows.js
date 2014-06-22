@@ -20,19 +20,19 @@ function show(bk, nshow, printit){
 			print("0x%04x %7d" % (k, v))
 	}
 	*/
-	for( shx = 0 ;shx <  bk.sheetCount; shx++){
-		var sh = bk.sheetByIndex(shx);
-		var nrows = sh.nrows, ncols = sh.ncols;
+	for( shx = 0 ;shx <  bk.sheet.count; shx++){
+		var sh = bk.sheet.byIndex(shx);
+		var rowCount = sh.row.count, colCount = sh.column.count;
 		
-		var anshow = Math.min(nshow, nrows);
-		console.log(util.format("sheet %d: name = %s; nrows = %d; ncols = %d",shx, sh.name, sh.nrows, sh.ncols));
-		if (nrows && ncols){
+		var anshow = Math.min(nshow, rowCount);
+		console.log(util.format("sheet %d: name = %s; rowCount = %d; colCount = %d",shx, sh.name,rowCount, colCount));
+		if (rowCount && colCount){
 			// Beat the bounds
-			for(rowx = 0 ; rowx < nrows ; rowx++){
-				var nc = sh.rowLength(rowx);
+			for(rowx = 0 ; rowx < rowCount ; rowx++){
+				var nc = sh.row.getCount(rowx);
 				if (nc){
-					var _junk = sh.rowTypes(rowx)[nc-1];
-					_junk = sh.rowValues(rowx)[nc-1];
+					var _junk = sh.row.getTypes(rowx)[nc-1];
+					_junk = sh.row.getValues(rowx)[nc-1];
 					_junk = sh.cell(rowx, nc-1);
 				}
 			}
@@ -40,19 +40,19 @@ function show(bk, nshow, printit){
 		for(rowx = 0; rowx <anshow-1; rowx++){
 			if (! printit && rowx % 10000 == 1 && rowx > 1)
 				console.log(util.format("done %d rows" ,rowx-1));
-			showRow(bk, sh, rowx, ncols, printit);
+			showRow(bk, sh, rowx, colCount, printit);
 		}
-		if (anshow && nrows)
-			showRow(bk, sh, nrows-1, ncols, printit);
+		if (anshow && rowCount)
+			showRow(bk, sh, rowCount-1, colCount, printit);
 	}
 	
 }
 
 function showHeader(bk){
-	console.log(util.format("BIFF version: %s; dateMode: %s",xl.toBiffVersionText(bk.biffVersion), bk.dateMode));
+	console.log(util.format("BIFF version: %s; dateMode: %s",xl.toBiffVersionString(bk.biffVersion), bk.dateMode));
 	console.log(util.format("codepage: %s (encoding: %s); countries: %s",bk.codePage, bk.encoding, bk.countries));
 	console.log(util.format("Last saved by: %s",bk.user_name));
-	console.log(util.format("Number of data sheets: %d" ,bk.sheetCount));
+	console.log(util.format("Number of data sheets: %d" ,bk.sheet.count));
 	console.log(util.format("Ragged rows: %d" , bk.ragged_rows));
 	if (bk.formattingInfo)
 		console.log(util.format("FORMATs: %d, FONTs: %d, XFs: %d",len(bk.format_list), len(bk.font_list), bk.xf_list.length));
@@ -63,35 +63,37 @@ function showHeader(bk){
 
 function showRow(bk, sh, rowx, colLen, printit){
         if (bk.ragged_rows)
-            colLen = sh.rowLength(rowx).length;
+            colLen = sh.row.getCount(rowx).length;
         if (!colLen) return;
         //if (printit) ;
         if (bk.formattingInfo)
 			getRowData(bk, sh, rowx, colLen).forEach(function(x){
-				var colx=x[0], ty=x[1], val=x[2], cxfx=x[3];
+				var colx=x[0], ty=x[1], val=x[2], raw = x[3], cxfx=x[4];
 				if (printit)
-                    console.log(util.format("cell %s%d: type=%d, data: %s, xfx: %s",
-                         xl.colname(colx), rowx+1, ty, val, cxfx));
+                    console.log(util.format("cell %s%d: type=%d, data: %s, raw data: %s, xfx: %s",
+                         xl.toColumnName(colx), rowx+1, ty, val, raw, cxfx));
 			});
         else
 			getRowData(bk, sh, rowx, colLen).forEach(function(x){
-				var colx=x[0], ty=x[1], val=x[2], _unused=x[3];
+				var colx=x[0], ty=x[1], val=x[2], raw = x[3], _unused=x[3];
 				if (printit)
-                    console.log(util.format("cell %s%d: type=%d, data: %s" ,xl.colname(colx), rowx+1, ty, val));
+                    console.log(util.format("cell %s%d: type=%d, data: %s, raw data: %s", xl.toColumnName(colx), rowx+1, ty, val, raw));
 			});
 }
 
 function getRowData(bk, sh, rowx, colLen){
 	var result = [];
 	var dmode = bk.dateMode;
-	var ctys = sh.rowTypes(rowx);
-	var cvals = sh.rowValues(rowx);
+	var ctys = sh.row.getTypes(rowx);
+	var cvals = sh.row.getValues(rowx);
+	var craws = sh.row.getRaws(rowx);
 	for(colx = 0; colx <colLen; colx++){
 		var cty = ctys[colx];
 		var cval = cvals[colx];
+		var craw = craws[colx];
 		var cxfx = null;
 		if (bk.formattingInfo)
-			cxfx = str(sh.cellXFIndex(rowx, colx));
+			cxfx = str(sh.cell.getXFIndex(rowx, colx));
 		else
 			cxfx = '';
 		var showval = '';
@@ -106,7 +108,7 @@ function getRowData(bk, sh, rowx, colLen){
 			if(showval == undefined) showval = util.format('<Unknown error code 0x%02x>',cval);
 		}else*/
 			showval = cval;
-		result.push([colx, cty, showval, cxfx]);
+		result.push([colx, cty, showval, craw, cxfx]);
 	}
 	return result
 }

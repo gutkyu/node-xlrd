@@ -1,7 +1,7 @@
 {
   "name": "node-xlrd",
-  "version": "0.1.2",
-  "description": "node.js's module to extract data from Microsoft Excel File",
+  "version": "0.2.0",
+  "description": "node.js's module to extract data from Microsoft Excel¢â File",
   "main": "./lib/node-xlrd.js",
   "directories": {
     "test": "test"
