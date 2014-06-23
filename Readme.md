@@ -10,6 +10,11 @@ node.js's module to extract data from Microsoft Excel¢â File
 *  only cell data without a formula, format.
 
 ## Changelog
+### 0.2.1
+	*added 'onDemand' option
+	*add api
+		workbook.cleanUp()
+	*fixed bugs
 ### 0.2.0
 	*changed api
 		workbook.nsheets -> workbook.sheet.count
@@ -33,7 +38,6 @@ node.js's module to extract data from Microsoft Excel¢â File
 		sheet.rowLength() -> sheet.row.
 		sheet.rowTypes() -> sheet.row.getTypes()
 		sheet.rowValues() -> sheet.row.getValues()
-		
 	*fixed bugs
 	
 ### 0.1.2
@@ -46,21 +50,23 @@ node.js's module to extract data from Microsoft Excel¢â File
 	note : It is possible to use not yet announced api, but it  may be modified in future versions.
 
 ### node-xlrd
-	*xlrd.openWorkbook(file, options, callback)
-		*file : excel file path
+	#### xlrd.open(file, options, callback)
+		open a workbook.
+		*file : file path
 		*options :
 			*onDemand :  option to load worksheets on demand.
 				it allows saving memory and time by loading only those selected sheets , and releasing sheets when no longer required.
-				onDemand = false (default)
-					open_workbook() loads global data and all sheets, releases resources no longer required
-				onDemand = true (only BIFF version >= 5.0)
-					openWorkbook() loads global data and returns without releasing resources. At this stage, the only information available about sheets is workbook.sheet.count and workbook.sheet.names.
-					workbook.sheet.byName() and workbook.sheet.byIndex() will load or reload the requested sheet if it is not already loaded or unloaded .
-					workbook.sheets will load all/any unloaded sheets.
-					The caller may save memory by calling workbook.sheet.unload() when finished with the sheet. This applies irrespective of the state of onDemand.
-					workbook.sheet.loaded() checks whether a sheet is loadd or not.
+				*onDemand = false (default)
+					*xlrd.open() loads global data and all sheets, releases resources no longer required
+				*onDemand = true (only BIFF version >= 5.0)
+					*xlrd.open() loads global data and returns without releasing resources. At this stage, the only information available about sheets is workbook.sheet.count and workbook.sheet.names.
+					*workbook.sheet.byName() and workbook.sheet.byIndex() will load or reload the requested sheet if it is not already loaded or unloaded .
+					*workbook.sheets will load all/any unloaded sheets.
+					*The caller may save memory by calling workbook.sheet.unload() when finished with the sheet. This applies irrespective of the state of onDemand.
+					*workbook.sheet.loaded() checks whether a sheet is loadd or not.
+					*workbook.cleanUp() should be called at end of node-xlrd.open() callback.
 		*callback : function(err, workbook)
-		
+			
 ### Class : Workbook
 	#### workbook.biffVersion
 		Version of BIFF (Binary Interchange File Format) used to create the file.
@@ -85,13 +91,25 @@ node.js's module to extract data from Microsoft Excel¢â File
 		the COUNTRY record or [List of country calling codes](http://en.wikipedia.org/wiki/List_of_country_calling_codes)
 
 	#### workbook.sheets
-		return A list of all sheets in the book.
+		return : A list of all sheets in the book.
 		All sheets not already loaded will be loaded.
-	
+		 
+	#### workbook.cleanUp()
+		all resources( file descriptor, large caches) released.
+		once cleanUp() called, no more reload or parse sheets.
+		
+		* onDemand == true, 
+			recommand to call this function , if don't neet to load or parse sheets.
+		* onDemand == false (default), 
+			allow function 'workbook.cleanUp()' to be omitted,
+			because 'xlrd.open()' calls this by  after callback finished.
+			
+		* if a error raised in xlrd.open callback, implicit workbook.cleanUp() call  by 'xlrd.open()'
+				
 	#### workbook.sheet.count
 		zero-based index of sheet in workbook.
 		
-	*workbook.sheet.names
+	#### workbook.sheet.names
 		return A list of the names of all the worksheets in the workbook file.
 		This information is available even when no sheets have yet been loaded.
 		
@@ -117,32 +135,32 @@ node.js's module to extract data from Microsoft Excel¢â File
 	#### sheet.index
 		Index of sheet
 		
-	#### sheet.cell( rowIndex, colIndex)
+	#### sheet.cell( rowIndex, colIndex )
 		return : javascript value ( string, number, Date) converting from raw of the cell in the given row and column.
 	
-	#### sheet.cell.getValue( rowIndex, colIndex)
+	#### sheet.cell.getValue( rowIndex, colIndex )
 		getValue() is equal to .cell()
 	
-	#### sheet.cell.getRaw( rowIndex, colIndex)
+	#### sheet.cell.getRaw( rowIndex, colIndex )
 		return : Raw value of the cell in the given row and column.
 		
-	#### sheet.cell.getType( rowIndex, colIndex)
+	#### sheet.cell.getType( rowIndex, colIndex )
 		return : Type of the cell in the given row and column.
 	
-	#### sheet.cell.getXFIndex( rowIndex, colIndex)
+	#### sheet.cell.getXFIndex( rowIndex, colIndex )
 		do not use, because a cell style parsing not yet implemented 
 		return : XF index of the cell in the given row and column.
 	
 	#### sheet.row.count
 		return : Number of rows in sheet.
 		
-	#### sheet.row.getValues( rowIndex)
+	#### sheet.row.getValues( rowIndex )
 		return :  a sequence of the cell values in the given row.
 	
-	#### sheet.row.getTypes( rowIndex, startColIndex, endColIndex)
+	#### sheet.row.getTypes( rowIndex, startColIndex, endColIndex )
 		return :  a slice of the types of the cells in the given row.
 	
-	#### sheet.row.getRaws( rowIndex, startColIndex, endColIndex)
+	#### sheet.row.getRaws( rowIndex, startColIndex, endColIndex )
 		return :  a slice of the values of the cells in the given row.
 	
 	#### sheet.col.count
@@ -152,11 +170,38 @@ node.js's module to extract data from Microsoft Excel¢â File
 ## Usage
 ```js
     var xl = require('node-xlrd');
-    xl.open('./testDate.xls', function(err,bk){
-        if(err) {console.log(err.name, err.message); return;}
-        var sht = bk.sheet.byIndex(0);
-        console.log(sht.cell(0,0));
-    });
+	
+	xl.open('./test.xls', function(err,bk){
+		if(err) {console.log(err.name, err.message); return;}
+		
+		var shtCount = bk.sheet.count;
+		for(var sIdx = 0; sIdx < shtCount; sIdx++ ){
+			console.log('sheet "%d" ', sIdx);
+			console.log('  check loaded : %s', bk.sheet.loaded(sIdx) );
+			var sht = bk.sheets[sIdx],
+				rCount = sht.row.count,
+				cCount = sht.column.count;
+			console.log('  name = %s; index = %d; rowCount = %d; columnCount = %d', sht.name, sIdx, rCount, cCount);
+			for(var rIdx = 0; rIdx < rCount; rIdx++){
+				for(var cIdx = 0; cIdx < cCount; cIdx++){
+					try{
+						console.log('  cell : row = %d, col = %d, value = "%s"', rIdx, cIdx, sht.cell(rIdx,cIdx));
+					}catch(e){
+						console.log(e.message);
+					}
+				}
+			}
+			
+			//save memory
+			//console.log('  try unloading : index %d', sIdx );
+			//if(bk.sheet.loaded(sIdx))
+			//	bk.sheet.unload(sIdx);
+			//console.log('  check loaded : %s', bk.sheet.loaded(sIdx) );
+		}
+		// if onDemand == false, allow function 'workbook.cleanUp()' to be omitted,
+		// because it is called by caller 'node-xlrd.open()' after callback finished.
+		//bk.cleanUp();
+	});
 ```
 ## License
 BSD
