@@ -84,17 +84,19 @@ Earliest supported by this module: 2.0 (represented as 20).
 	
 #### workbook.codePage
 An integer denoting the character set used for strings in this file.  
-For BIFF 8 and later, this will be 1200, meaning Unicode; more precisely, UTF_16_LE.
+For BIFF 8 and later, this will be 1200, meaning Unicode; more precisely, UTF16LE.
 
 #### workbook.encoding
 The encoding that was derived from the codepage.
 #### workbook.countries
-A array containing the (telephone system) country code for:  
-    	[0]: the user-interface setting when the file was created.  
-    	[1]: the regional settings.  
-Example:  
-    	(1, 61) meaning (USA, Australia)  
-    	(82, 82) meaning (South Korea, South Korea)  
+Array containing the (telephone system) country code for:  
+
+	[0]: the user-interface setting when the file was created.  
+	[1]: the regional settings.  
+Example:
+
+	(1, 61) meaning (USA, Australia)  
+	(82, 82) meaning (South Korea, South Korea)  
 This information may give a clue to the correct encoding for an unknown codepage.  
 For a long list of observed values, refer to the OpenOffice.org documentation for
 the COUNTRY record or [List of country calling codes](http://en.wikipedia.org/wiki/List_of_country_calling_codes)
