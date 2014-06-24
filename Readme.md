@@ -1,5 +1,5 @@
 # node-xlrd
-node.js's module to extract data from Microsoft Excel¢â File
+node.js's module to extract data from Microsoft Excelâ„¢ File
 
 ## Features
 *  porting [python module xlrd](http://www.python-excel.org/) to javascript
