@@ -24,10 +24,10 @@ node.js's module to extract data from Microsoft Excel¢â File
 		workbook.sheets() function -> workbook.sheets property
 		workbook.sheetByName() -> workbook.sheet.byName()
 		workbook.sheetNames() function -> workbook.sheetNames property
-		workbook.sheetList -> removed
-		workbook.getSheets() -> removed
-		workbook.fakeGlobalsGetSheet() -> removed
-		workbook.getBOF() -> removed
+		workbook.sheetList -> removed, recommand workbook.sheetNames property
+		workbook.getSheets() -> removed, inner function
+		workbook.fakeGlobalsGetSheet() -> removed, inner function
+		workbook.getBOF() -> removed, inner function
 		workbook.datemode -> workbook.dateMode
 		sheet.ncols -> sheet.column.count
 		sheet.nrows -> sheet.row.count
@@ -37,7 +37,7 @@ node.js's module to extract data from Microsoft Excel¢â File
 		sheet.cellType() -> sheet.cell.getType()
 		sheet.cellXFIndex() -> sheet.cell.getXFIndex()
 		sheet.row() -> sheet.row.getValues()
-		sheet.rowLength() -> sheet.row.
+		sheet.rowLength() -> sheet.row.getCount()
 		sheet.rowTypes() -> sheet.row.getTypes()
 		sheet.rowValues() -> sheet.row.getValues()
 	*fixed bugs
@@ -98,18 +98,17 @@ node.js's module to extract data from Microsoft Excel¢â File
 		 
 	#### workbook.cleanUp()
 		all resources( file descriptor, large caches) released.
-		once cleanUp() called, no more reload or parse sheets.
+		Once cleanUp() called, no more reload or parse sheets.
 		
 		* onDemand == true, 
-			recommand to call this function , if don't neet to load or parse sheets.
+			Call this function ,if don't neet to load or parse sheets.
 		* onDemand == false (default), 
-			allow function 'workbook.cleanUp()' to be omitted,
-			because 'xlrd.open()' calls this by  after callback finished.
+			It is possible to omit workbook.cleanUp(), because xlrd.open() implicit calls it after the callback finished.
 			
-		* if a error raised in xlrd.open callback, implicit workbook.cleanUp() call  by 'xlrd.open()'
+		* if any error raised in xlrd.open callback, workbook.cleanUp() implicit call by xlrd.open()
 				
 	#### workbook.sheet.count
-		zero-based index of sheet in workbook.
+		Zero-based index of sheet in workbook.
 		
 	#### workbook.sheet.names
 		return A list of the names of all the worksheets in the workbook file.
