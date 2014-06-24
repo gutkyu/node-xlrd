@@ -10,6 +10,8 @@ node.js's module to extract data from Microsoft Excel¢â File
 *  only cell data without a formula, format.
 
 ## Changelog
+### 0.2.2
+	*fixed bugs
 ### 0.2.1
 	*added 'onDemand' option
 	*add api
