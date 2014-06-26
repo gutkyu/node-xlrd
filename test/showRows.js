@@ -55,7 +55,7 @@ function showHeader(bk){
 	console.log(util.format("Number of data sheets: %d" ,bk.sheet.count));
 	console.log(util.format("Ragged rows: %d" , bk.ragged_rows));
 	if (bk.formattingInfo)
-		console.log(util.format("FORMATs: %d, FONTs: %d, XFs: %d",len(bk.format_list), len(bk.font_list), bk.xf_list.length));
+		console.log(util.format("FORMATs: %d, FONTs: %d, XFs: %d",len(bk.formatList), len(bk.font_list), bk.xfList.length));
 	//if (! options.suppress_timing)
 	//	console.log(util.format("Load time: %.2f seconds (stage 1) %.2f seconds (stage 2)",bk.load_time_stage_1, bk.load_time_stage_2));
 	console.log();
@@ -68,16 +68,16 @@ function showRow(bk, sh, rowx, colLen, printit){
         //if (printit) ;
         if (bk.formattingInfo)
 			getRowData(bk, sh, rowx, colLen).forEach(function(x){
-				var colx=x[0], ty=x[1], val=x[2], raw = x[3], cxfx=x[4];
+				var colx=x[0], typ=x[1], val=x[2], raw = x[3], cxfx=x[4];
 				if (printit)
                     console.log(util.format("cell %s%d: type=%d, data: %s, raw data: %s, xfx: %s",
-                         xl.toColumnName(colx), rowx+1, ty, val, raw, cxfx));
+                         xl.toColumnName(colx), rowx+1, typ, val, raw, cxfx));
 			});
         else
 			getRowData(bk, sh, rowx, colLen).forEach(function(x){
-				var colx=x[0], ty=x[1], val=x[2], raw = x[3], _unused=x[3];
+				var colx=x[0], typ=x[1], val=x[2], raw = x[3], _unused=x[3];
 				if (printit)
-                    console.log(util.format("cell %s%d: type=%d, data: %s, raw data: %s", xl.toColumnName(colx), rowx+1, ty, val, raw));
+                    console.log(util.format("cell %s%d: type=%d, data: %s, raw data: %s", xl.toColumnName(colx), rowx+1, typ, val, raw));
 			});
 }
 
@@ -104,7 +104,7 @@ function getRowData(bk, sh, rowx, colLen){
 			//	showval = "%s:%s" % (type(e).__name__, e)
 			//	cty = xlrd.XL_CELL_ERROR
 		}else if( cty == comm.XL_CELL_ERROR){
-			showval = comm.error_text_from_code[cval]; 
+			showval = comm.errorCodeStringMap[cval]; 
 			if(showval == undefined) showval = util.format('<Unknown error code 0x%02x>',cval);
 		}else*/
 			showval = cval;
