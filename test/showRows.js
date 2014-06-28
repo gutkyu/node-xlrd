@@ -50,19 +50,19 @@ function show(bk, nshow, printit){
 
 function showHeader(bk){
 	console.log(util.format("BIFF version: %s; dateMode: %s",xl.toBiffVersionString(bk.biffVersion), bk.dateMode));
-	console.log(util.format("codepage: %s (encoding: %s); countries: %s",bk.codePage, bk.encoding, bk.countries));
-	console.log(util.format("Last saved by: %s",bk.user_name));
+	console.log(util.format("codePage: %s (encoding: %s); countries: %s",bk.codePage, bk.encoding, bk.countries));
+	console.log(util.format("Last saved by: %s",bk.userName));
 	console.log(util.format("Number of data sheets: %d" ,bk.sheet.count));
-	console.log(util.format("Ragged rows: %d" , bk.ragged_rows));
+	console.log(util.format("Ragged rows: %d" , bk.raggedRows));
 	if (bk.formattingInfo)
-		console.log(util.format("FORMATs: %d, FONTs: %d, XFs: %d",len(bk.formatList), len(bk.font_list), bk.xfList.length));
+		console.log(util.format("FORMATs: %d, FONTs: %d, XFs: %d",len(bk.formatList), len(bk.fontList), bk.xfList.length));
 	//if (! options.suppress_timing)
-	//	console.log(util.format("Load time: %.2f seconds (stage 1) %.2f seconds (stage 2)",bk.load_time_stage_1, bk.load_time_stage_2));
+	//	console.log(util.format("Load time: %.2f seconds (stage 1) %.2f seconds (stage 2)",bk.loadTimeStage1, bk.loadTimeStage2));
 	console.log();
 }
 
 function showRow(bk, sh, rowx, colLen, printit){
-        if (bk.ragged_rows)
+        if (bk.raggedRows)
             colLen = sh.row.getCount(rowx).length;
         if (!colLen) return;
         //if (printit) ;
