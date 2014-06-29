@@ -51,7 +51,7 @@ function show(bk, nshow, printit){
 function showHeader(bk){
 	console.log(util.format("BIFF version: %s; dateMode: %s",xl.common.toBiffVersionString(bk.biffVersion), bk.dateMode));
 	console.log(util.format("codePage: %s (encoding: %s); countries: [%s,%s], %s",bk.codePage, bk.encoding, xl.common.toCountryName(bk.countries[0]), xl.common.toCountryName(bk.countries[1]), bk.countries));
-	console.log(util.format("Last saved by: %s",bk.userName));
+	console.log(util.format("Last saved by: %s",bk.lastUser));
 	console.log(util.format("Number of data sheets: %d" ,bk.sheet.count));
 	console.log(util.format("Ragged rows: %d" , bk.raggedRows));
 	if (bk.formattingInfo)
