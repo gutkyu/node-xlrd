@@ -49,8 +49,8 @@ function show(bk, nshow, printit){
 }
 
 function showHeader(bk){
-	console.log(util.format("BIFF version: %s; dateMode: %s",xl.toBiffVersionString(bk.biffVersion), bk.dateMode));
-	console.log(util.format("codePage: %s (encoding: %s); countries: %s",bk.codePage, bk.encoding, bk.countries));
+	console.log(util.format("BIFF version: %s; dateMode: %s",xl.common.toBiffVersionString(bk.biffVersion), bk.dateMode));
+	console.log(util.format("codePage: %s (encoding: %s); countries: [%s,%s], %s",bk.codePage, bk.encoding, xl.common.toCountryName(bk.countries[0]), xl.common.toCountryName(bk.countries[1]), bk.countries));
 	console.log(util.format("Last saved by: %s",bk.userName));
 	console.log(util.format("Number of data sheets: %d" ,bk.sheet.count));
 	console.log(util.format("Ragged rows: %d" , bk.raggedRows));
@@ -77,7 +77,7 @@ function showRow(bk, sh, rowx, colLen, printit){
 			getRowData(bk, sh, rowx, colLen).forEach(function(x){
 				var colx=x[0], typ=x[1], val=x[2], raw = x[3], _unused=x[3];
 				if (printit)
-                    console.log(util.format("cell %s%d: type=%d, data: %s, raw data: %s", xl.toColumnName(colx), rowx+1, typ, val, raw));
+                    console.log(util.format("cell %s%d: type=%d, data: %s, raw data: %s", xl.common.toColumnName(colx), rowx+1, typ, val, raw));
 			});
 }
 
