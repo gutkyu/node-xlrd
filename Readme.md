@@ -87,7 +87,6 @@ open a workbook.
 ###	node-xlrd.common
 #### node-xlrd.common.toColumnName(colunmIndex)
 convert column name to zero-based index.  
-refer [workbook.countries](https://github.com/gutkyu/node-xlrd/blob/devel/Readme.md#workbookcountries)
 
 #### node-xlrd.common.toBiffVersionString(version)
 return the corresponding string for BIFF version number
@@ -105,7 +104,7 @@ return the corresponding string for BIFF version number
 
 #### node-xlrd.common.toCountryName(countryCode)
 returns the corresponding country name for a country code  
-refer workbook.countries property
+refer [workbook.countries](https://github.com/gutkyu/node-xlrd/blob/devel/Readme.md#workbookcountries) property
 
 ### Class : Workbook
 #### workbook.biffVersion
@@ -135,7 +134,7 @@ This information may give a clue to the correct encoding for an unknown codepage
 For a long list of observed values, refer to the OpenOffice.org documentation for
 the COUNTRY record or [List of country calling codes](http://en.wikipedia.org/wiki/List_of_country_calling_codes)
 
-refer [node-xlrd.common.toCountryName(countryCode)](https://github.com/gutkyu/node-xlrd/blob/devel/Readme.md#)
+refer [node-xlrd.common.toCountryName(countryCode)](https://github.com/gutkyu/node-xlrd/blob/devel/Readme.md#node-xlrdcommontocolumnnamecolunmindex)
 
 #### workbook.sheets
 return : A list of all sheets in the book.  
