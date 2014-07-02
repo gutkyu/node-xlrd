@@ -10,6 +10,13 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 *  only cell data without a formula, format.
 
 ## Changelog
+### 0.2.4
+* used lowerCamelCase for inner variables, properties and function names.
+    moved to javascript naming conventions from python.
+* added 'toCountryName' function
+* added 'lastUser' property
+* fixed bugs
+
 ### 0.2.2
 * fixed bugs
 
@@ -27,6 +34,7 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 |workbook.nsheets | workbook.sheet.count|
 |workbook.codepage | workbook.codePage|
 |workbook.sheets() function | workbook.sheets property|
+|workbook.sheetByIndex() | workbook.sheet.byIndex()|
 |workbook.sheetByName() | workbook.sheet.byName()|
 |workbook.sheetNames() function | workbook.sheetNames property|
 |workbook.sheetList | removed, recommand workbook.sheetNames property|
@@ -72,16 +80,40 @@ open a workbook.
 			* workbook.sheet.byName() and workbook.sheet.byIndex() will load or reload the requested sheet if it is not already loaded or unloaded .  
 			* workbook.sheets will load all/any unloaded sheets.  
 			* The caller may save memory by calling workbook.sheet.unload() when finished with the sheet. This applies irrespective of the state of onDemand.  
-			* workbook.sheet.loaded() checks whether a sheet is loadd or not.  
+			* workbook.sheet.loaded() checks whether a sheet is loaded or not.  
 			* workbook.cleanUp() should be called at end of node-xlrd.open() callback.  
 	* callback : function(err, workbook)
-		
+    
+###	node-xlrd.common
+#### node-xlrd.common.toColumnName(colunmIndex)
+convert column name to zero-based index
+
+#### node-xlrd.common.toBiffVersionString(version)
+return the corresponding string for BIFF version number
+    0:  "(not BIFF)"
+    20: "2.0"
+    21: "2.1"
+    30: "3"
+    40: "4S"
+    45: "4W"
+    50: "5"
+    70: "7"
+    80: "8"
+    85: "8X"
+
+#### node-xlrd.common.toCountryName(countryCode)
+returns the corresponding country name for a country code
+refer workbook.countries property
+
 ### Class : Workbook
 #### workbook.biffVersion
 Version of BIFF (Binary Interchange File Format) used to create the file.  
 Latest is 8.0 (represented here as 80), introduced with Excel 97.  
 Earliest supported by this module: 2.0 (represented as 20).
-	
+
+#### workbook.lastUser
+the name of the user who last created, opened, or modified the file.
+
 #### workbook.codePage
 An integer denoting the character set used for strings in this file.  
 For BIFF 8 and later, this will be 1200, meaning Unicode; more precisely, UTF16LE.
@@ -100,6 +132,8 @@ Example:
 This information may give a clue to the correct encoding for an unknown codepage.  
 For a long list of observed values, refer to the OpenOffice.org documentation for
 the COUNTRY record or [List of country calling codes](http://en.wikipedia.org/wiki/List_of_country_calling_codes)
+
+refer node-xlrd.common.toCountryName(countryCode)
 
 #### workbook.sheets
 return : A list of all sheets in the book.  
