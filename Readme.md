@@ -11,7 +11,7 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 
 ## Changelog
 ### 0.2.4
-* used lowerCamelCase for inner variables, properties and function names.
+* used lowerCamelCase for inner variables, properties and function names.  
     moved to javascript naming conventions from python.
 * added 'toCountryName' function
 * added 'lastUser' property
@@ -86,10 +86,12 @@ open a workbook.
     
 ###	node-xlrd.common
 #### node-xlrd.common.toColumnName(colunmIndex)
-convert column name to zero-based index
+convert column name to zero-based index.  
+refer [workbook.countries](https://github.com/gutkyu/node-xlrd/blob/devel/Readme.md#workbookcountries)
 
 #### node-xlrd.common.toBiffVersionString(version)
 return the corresponding string for BIFF version number
+
     0:  "(not BIFF)"
     20: "2.0"
     21: "2.1"
@@ -102,7 +104,7 @@ return the corresponding string for BIFF version number
     85: "8X"
 
 #### node-xlrd.common.toCountryName(countryCode)
-returns the corresponding country name for a country code
+returns the corresponding country name for a country code  
 refer workbook.countries property
 
 ### Class : Workbook
@@ -133,7 +135,7 @@ This information may give a clue to the correct encoding for an unknown codepage
 For a long list of observed values, refer to the OpenOffice.org documentation for
 the COUNTRY record or [List of country calling codes](http://en.wikipedia.org/wiki/List_of_country_calling_codes)
 
-refer node-xlrd.common.toCountryName(countryCode)
+refer [node-xlrd.common.toCountryName(countryCode)](https://github.com/gutkyu/node-xlrd/blob/devel/Readme.md#)
 
 #### workbook.sheets
 return : A list of all sheets in the book.  
