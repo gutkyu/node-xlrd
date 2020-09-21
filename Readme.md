@@ -7,9 +7,13 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 
 ## Status
 *  supported file format : Excel 2 ~ 2003 File(.xls), not .xlsx file
-*  only cell data without a formula, format.
+*  only cell data without a formula, format, hyperlink.
 
 ## Changelog
+### 0.2.5
+* fixed bugs
+	crash when opening an EXCEL file contained hyperlink, text box, form control, note, table.
+
 ### 0.2.4
 * used lowerCamelCase for inner variables, properties and function names.  
     moved to javascript naming conventions from python.
@@ -74,12 +78,12 @@ open a workbook.
 	* onDemand :  option to load worksheets on demand.  
 		it allows saving memory and time by loading only those selected sheets , and releasing sheets when no longer required.  
 		* onDemand = false (default),  
-			xlrd.open() loads global data and all sheets, releases resources no longer required  
+			xlrd.open() loads global data and all sheets at once, returns the result to callback. there is no need to call cleanup() because internally used resources are automatically released.
 		* onDemand = true (only BIFF version >= 5.0)  
-			* xlrd.open() loads global data and returns without releasing resources. At this stage, the only information available about sheets is workbook.sheet.count and workbook.sheet.names.  
-			* workbook.sheet.byName() and workbook.sheet.byIndex() will load or reload the requested sheet if it is not already loaded or unloaded .  
+			* xlrd.open() loads global data and returns without releasing resources. at this stage, the only information available about sheets is workbook.sheet.count and workbook.sheet.names.  
+			* workbook.sheet.byName() and workbook.sheet.byIndex() will load the requested sheet if it is not loaded or reload it if unloaded.  
 			* workbook.sheets will load all/any unloaded sheets.  
-			* The caller may save memory by calling workbook.sheet.unload() when finished with the sheet. This applies irrespective of the state of onDemand.  
+			* The caller may save memory by calling workbook.sheet.unload() when finished working on the sheet. this applies irrespective of the state of onDemand.  
 			* workbook.sheet.loaded() checks whether a sheet is loaded or not.  
 			* workbook.cleanUp() should be called at end of node-xlrd.open() callback.  
 	* callback : function(err, workbook)
@@ -141,7 +145,7 @@ return : A list of all sheets in the book.
 All sheets not already loaded will be loaded.
 	 
 #### workbook.cleanUp()
-all resources( file descriptor, large caches) released.  
+all resources( file descriptor, large caches) release.  
 Once cleanUp() called, no more reload or parse sheets.
 	
 * onDemand == true,  
