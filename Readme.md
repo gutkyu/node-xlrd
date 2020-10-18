@@ -10,6 +10,9 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 *  only cell data without a formula, format, hyperlink.
 
 ## Changelog
+### 0.3.2
+* fixed util.format() method format specifier error.
+* code formatting with Prettier.
 ### 0.3.0
 * fixed a deprecation warning
 	'new Buffer(size)' or 'new Buffer(array)' emits a deprecation warning.
