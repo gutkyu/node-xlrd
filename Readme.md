@@ -9,10 +9,19 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 *  supported file format : Excel 2 ~ 2003 File(.xls), not .xlsx file
 *  only cell data without a formula, format, hyperlink.
 
+## Supported node.js versions
+*  from v0.10 to v12 : supported
+*  from v13 to future versions : maybe
+
 ## Changelog
+### 0.3.4
+* rename './test'  to './examples'.
+* fixed example error.
+
 ### 0.3.3
 * fixed a deprecation warning
 	* Calling an asynchronous function without callback is deprecated.
+
 ### 0.3.2
 * fixed util.format() method format specifier error.
 * code formatting with Prettier.
