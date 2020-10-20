@@ -1,3 +1,6 @@
+.vscode
+examples
+.gitignore
+.prettierrc
 Readme.ko.md
-node_modules/*
 *.log
