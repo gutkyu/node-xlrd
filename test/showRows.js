@@ -1,7 +1,7 @@
-var util = require("util"),
-  xl = require("../lib/node-xlrd");
+var util = require('util'),
+  xl = require('../lib/node-xlrd');
 
-xl.open("./test.xls", function (err, bk) {
+xl.open('./test.xls', function (err, bk) {
   if (err) {
     console.log(err.name, err.message);
     return;
@@ -31,7 +31,7 @@ function show(bk, nshow, printit) {
     var anshow = Math.min(nshow, rowCount);
     console.log(
       util.format(
-        "sheet %d: name = %s; rowCount = %d; colCount = %d",
+        'sheet %d: name = %s; rowCount = %d; colCount = %d',
         shx,
         sh.name,
         rowCount,
@@ -51,7 +51,7 @@ function show(bk, nshow, printit) {
     }
     for (rowx = 0; rowx < anshow - 1; rowx++) {
       if (!printit && rowx % 10000 == 1 && rowx > 1)
-        console.log(util.format("done %d rows", rowx - 1));
+        console.log(util.format('done %d rows', rowx - 1));
       showRow(bk, sh, rowx, colCount, printit);
     }
     if (anshow && rowCount) showRow(bk, sh, rowCount - 1, colCount, printit);
@@ -61,14 +61,14 @@ function show(bk, nshow, printit) {
 function showHeader(bk) {
   console.log(
     util.format(
-      "BIFF version: %s; dateMode: %s",
+      'BIFF version: %s; dateMode: %s',
       xl.common.toBiffVersionString(bk.biffVersion),
       bk.dateMode
     )
   );
   console.log(
     util.format(
-      "codePage: %s (encoding: %s); countries: [%s,%s], %s",
+      'codePage: %s (encoding: %s); countries: [%s,%s], %s',
       bk.codePage,
       bk.encoding,
       xl.common.toCountryName(bk.countries[0]),
@@ -76,13 +76,13 @@ function showHeader(bk) {
       bk.countries
     )
   );
-  console.log(util.format("Last saved by: %s", bk.lastUser));
-  console.log(util.format("Number of data sheets: %d", bk.sheet.count));
-  console.log(util.format("Ragged rows: %d", bk.raggedRows));
+  console.log(util.format('Last saved by: %s', bk.lastUser));
+  console.log(util.format('Number of data sheets: %d', bk.sheet.count));
+  console.log(util.format('Ragged rows: %d', bk.raggedRows));
   if (bk.formattingInfo)
     console.log(
       util.format(
-        "FORMATs: %d, FONTs: %d, XFs: %d",
+        'FORMATs: %d, FONTs: %d, XFs: %d',
         len(bk.formatList),
         len(bk.fontList),
         bk.xfList.length
@@ -107,7 +107,7 @@ function showRow(bk, sh, rowx, colLen, printit) {
       if (printit)
         console.log(
           util.format(
-            "cell %s%d: type=%d, data: %s, raw data: %s, xfx: %s",
+            'cell %s%d: type=%d, data: %s, raw data: %s, xfx: %s',
             xl.toColumnName(colx),
             rowx + 1,
             typ,
@@ -127,7 +127,7 @@ function showRow(bk, sh, rowx, colLen, printit) {
       if (printit)
         console.log(
           util.format(
-            "cell %s%d: type=%d, data: %s, raw data: %s",
+            'cell %s%d: type=%d, data: %s, raw data: %s',
             xl.common.toColumnName(colx),
             rowx + 1,
             typ,
@@ -150,8 +150,8 @@ function getRowData(bk, sh, rowx, colLen) {
     var craw = craws[colx];
     var cxfx = null;
     if (bk.formattingInfo) cxfx = str(sh.cell.getXFIndex(rowx, colx));
-    else cxfx = "";
-    var showval = "";
+    else cxfx = '';
+    var showval = '';
     /* if (cty == comm.XL_CELL_DATE){
 			//try:
 				showval = comm.xldate_as_tuple(cval, dmode);
