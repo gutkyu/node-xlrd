@@ -1,6 +1,6 @@
 var xl = require('../lib/node-xlrd'),
   util = require('util');
-xl.open('./testDate.xls', {onDemand: true}, function (err, bk) {
+xl.open('./date.xls', {onDemand: true}, function (err, bk) {
   //xl.open('./test.xls', function(err,bk){
   if (err) {
     console.log(err.name, err.message);

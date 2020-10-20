@@ -1,7 +1,7 @@
 var util = require('util'),
   xl = require('../lib/node-xlrd');
 
-xl.open('./test.xls', function (err, bk) {
+xl.open('./basic.xls', function (err, bk) {
   if (err) {
     console.log(err.name, err.message);
     return;
