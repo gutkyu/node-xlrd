@@ -1,6 +1,6 @@
 {
   "name": "node-xlrd",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "node.js's module to extract data from Microsoft Excel™ File(.xls)",
   "main": "./lib/node-xlrd.js",
   "directories": {
@@ -28,8 +28,8 @@
     "name": "Sangkyu Jung"
   },
   "license": "BSD",
+  "homepage": "https://github.com/gutkyu/node-xlrd",
   "bugs": {
     "url": "https://github.com/gutkyu/node-xlrd/issues"
-  },
-  "readmeFilename": "Readme.md"
+  }
 }
