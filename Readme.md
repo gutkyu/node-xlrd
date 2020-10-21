@@ -14,6 +14,9 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 *  from v13 to future versions : maybe
 
 ## Changelog
+### 0.3.5
+* fixed a error handling BOUNDSHEET.
+
 ### 0.3.4
 * rename './test'  to './examples'.
 * fixed example error.
