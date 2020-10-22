@@ -17,6 +17,9 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 ### 0.4.0
 * refactored to minimize memory usage and handle large xls files.
 
+### 0.3.5
+* fixed a error handling BOUNDSHEET.
+
 ### 0.3.4
 * rename './test'  to './examples'.
 * fixed example error.
