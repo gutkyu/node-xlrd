@@ -4,7 +4,7 @@
   "description": "node.js's module to extract data from Microsoft Excel™ File(.xls)",
   "main": "./lib/node-xlrd.js",
   "directories": {
-    "test": "test"
+    "examples": "examples"
   },
   "dependencies": {
     "iconv-lite": "~0.6.2"

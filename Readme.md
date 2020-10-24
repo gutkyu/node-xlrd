@@ -17,6 +17,11 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 ### 0.4.0
 * refactored to minimize memory usage and handle large xls files.
 
+### 0.3.6
+* fixed XL_ARRAY parsing error.
+* fixed fuction deriveEncoding() call missing.
+* fixed missing 'use strict' in common.js.
+
 ### 0.3.5
 * fixed a error handling BOUNDSHEET.
 
