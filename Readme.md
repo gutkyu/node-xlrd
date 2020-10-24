@@ -14,6 +14,9 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 *  from v13 to future versions : maybe
 
 ## Changelog
+### 0.3.7
+* fixed deriveEncoding() call error.
+
 ### 0.3.6
 * fixed XL_ARRAY parsing error.
 * fixed fuction deriveEncoding() call missing.
