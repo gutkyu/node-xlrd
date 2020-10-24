@@ -7,7 +7,7 @@
     "test": "test"
   },
   "dependencies": {
-    "iconv-lite": "~0.2.11"
+    "iconv-lite": "~0.6.2"
   },
   "devDependencies": {},
   "scripts": {
