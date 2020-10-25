@@ -14,6 +14,12 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 *  from v13 to future versions : maybe
 
 ## Changelog
+### 0.4.1
+* fixed a error handling BOUNDSHEET.
+* converted Buffer to Uint8Array.
+* update iconv-lite version.
+* cherry pick v0.3.6 into this branch.
+
 ### 0.4.0
 * refactored to minimize memory usage and handle large xls files.
 
