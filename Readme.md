@@ -14,6 +14,10 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 *  from v13 to future versions : maybe
 
 ## Changelog
+### 0.4.2
+* added another way to encoding.
+	* TextDecoder
+
 ### 0.4.1
 * fixed a error handling BOUNDSHEET.
 * converted Buffer to Uint8Array.
