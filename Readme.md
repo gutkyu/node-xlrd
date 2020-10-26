@@ -14,6 +14,22 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 *  from v13 to future versions : maybe
 
 ## Changelog
+### 0.3.8
+* updated update iconv-lite version
+	* v0.2.11 to v0.6.2
+* fixed iconv-lite supported encoding names
+
+### 0.3.7
+* fixed deriveEncoding() call error.
+
+### 0.3.6
+* fixed XL_ARRAY parsing error.
+* fixed fuction deriveEncoding() call missing.
+* fixed missing 'use strict' in common.js.
+
+### 0.3.5
+* fixed a error handling BOUNDSHEET.
+
 ### 0.3.4
 * rename './test'  to './examples'.
 * fixed example error.
@@ -239,36 +255,50 @@ Nominal number of columns in sheet. It is 1 + the maximum column index found, ig
 ```js
 var xl = require('node-xlrd');
 
-xl.open('./test.xls', function(err,bk){
-	if(err) {console.log(err.name, err.message); return;}
-	
-	var shtCount = bk.sheet.count;
-	for(var sIdx = 0; sIdx < shtCount; sIdx++ ){
-		console.log('sheet "%d" ', sIdx);
-		console.log('  check loaded : %s', bk.sheet.loaded(sIdx) );
-		var sht = bk.sheets[sIdx],
-			rCount = sht.row.count,
-			cCount = sht.column.count;
-		console.log('  name = %s; index = %d; rowCount = %d; columnCount = %d', sht.name, sIdx, rCount, cCount);
-		for(var rIdx = 0; rIdx < rCount; rIdx++){
-			for(var cIdx = 0; cIdx < cCount; cIdx++){
-				try{
-					console.log('  cell : row = %d, col = %d, value = "%s"', rIdx, cIdx, sht.cell(rIdx,cIdx));
-				}catch(e){
-					console.log(e.message);
-				}
-			}
-		}
-		
-		//save memory
-		//console.log('  try unloading : index %d', sIdx );
-		//if(bk.sheet.loaded(sIdx))
-		//	bk.sheet.unload(sIdx);
-		//console.log('  check loaded : %s', bk.sheet.loaded(sIdx) );
-	}
-	// if onDemand == false, allow function 'workbook.cleanUp()' to be omitted,
-	// because it is called by caller 'node-xlrd.open()' after callback finished.
-	//bk.cleanUp();
+xl.open('./test.xls', function (err, bk) {
+  if (err) {
+    console.log(err.name, err.message);
+    return;
+  }
+
+  var shtCount = bk.sheet.count;
+  for (var sIdx = 0; sIdx < shtCount; sIdx++) {
+    console.log('sheet "%d" ', sIdx);
+    console.log('  check loaded : %s', bk.sheet.loaded(sIdx));
+    var sht = bk.sheets[sIdx],
+      rCount = sht.row.count,
+      cCount = sht.column.count;
+    console.log(
+      '  name = %s; index = %d; rowCount = %d; columnCount = %d',
+      sht.name,
+      sIdx,
+      rCount,
+      cCount
+    );
+    for (var rIdx = 0; rIdx < rCount; rIdx++) {
+      for (var cIdx = 0; cIdx < cCount; cIdx++) {
+        try {
+          console.log(
+            '  cell : row = %d, col = %d, value = "%s"',
+            rIdx,
+            cIdx,
+            sht.cell(rIdx, cIdx)
+          );
+        } catch (e) {
+          console.log(e.message);
+        }
+      }
+    }
+
+    //save memory
+    //console.log('  try unloading : index %d', sIdx );
+    //if(bk.sheet.loaded(sIdx))
+    //	bk.sheet.unload(sIdx);
+    //console.log('  check loaded : %s', bk.sheet.loaded(sIdx) );
+  }
+  // if onDemand == false, allow function 'workbook.cleanUp()' to be omitted,
+  // because it is called by caller 'node-xlrd.open()' after callback finished.
+  //bk.cleanUp();
 });
 ```
 ## License
