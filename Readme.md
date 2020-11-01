@@ -14,6 +14,10 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 *  from v13 to future versions : maybe
 
 ## Changelog
+### 0.3.9
+* fixed date parsing error
+	* when cellType is date, the value of month is incorrect
+
 ### 0.3.8
 * updated update iconv-lite version
 	* v0.2.11 to v0.6.2
