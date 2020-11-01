@@ -8,12 +8,31 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 ## Status
 *  supported file format : Excel 2 ~ 2003 File(.xls), not .xlsx file
 *  only cell data without a formula, format, hyperlink.
+*  new features and enhancements in node-xlrd version 1
+  * event-based programming
+    * minimizing memory usage
+    * large file support
 
 ## Supported node.js versions
-*  from v0.10 to v12 : supported
-*  from v13 to future versions : maybe
+*  from v0.10 to v6 : no supported
+*  from v7 to v15 : supported
+*  future versions : maybe
 
 ## Changelog
+### 1.0.0-rc.2
+* fixed date parsing errors
+
+### 1.0.0-rc.1
+* added new features
+  * event mode
+      * new events
+	  	* Workbook : 'done', 'error'
+		* Sheet : 'row', 'done', 'error'
+	  * new function
+	  	* Workbook : work
+* deprecated some functions
+	* workbook.cleanUp();
+
 ### 0.4.2
 * added another way to encoding.
 	* TextDecoder
@@ -26,6 +45,14 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 
 ### 0.4.0
 * refactored to minimize memory usage and handle large xls files.
+
+### 0.3.8
+* updated update iconv-lite version
+	* v0.2.11 to v0.6.2
+* fixed iconv-lite supported encoding names
+
+### 0.3.7
+* fixed deriveEncoding() call error.
 
 ### 0.3.6
 * fixed XL_ARRAY parsing error.
@@ -115,6 +142,7 @@ note : It is possible to use not yet announced api, but it  may be modified in f
 open a workbook.
 * file : file path  
 * options :
+	* eventMode : option for event mode. default : false
 	* onDemand :  option to load worksheets on demand.  
 		it allows saving memory and time by loading only those selected sheets , and releasing sheets when no longer required.  
 		* onDemand = false (default),  
@@ -151,6 +179,11 @@ returns the corresponding country name for a country code
 refer [workbook.countries](https://github.com/gutkyu/node-xlrd/blob/devel/Readme.md#workbookcountries) property
 
 ### Class : Workbook
+#### Event : 'done'
+
+#### Event : 'error'
+Event "error" handler should be defined.
+
 #### workbook.biffVersion
 Version of BIFF (Binary Interchange File Format) used to create the file.  
 Latest is 8.0 (represented here as 80), introduced with Excel 97.  
@@ -184,8 +217,12 @@ refer [node-xlrd.common.toCountryName(countryCode)](https://github.com/gutkyu/no
 return : A list of all sheets in the book.  
 All sheets not already loaded will be loaded.
 	 
+#### workbook.work(callback)
+'callback' should be defined
+
 #### workbook.cleanUp()
-all resources( file descriptor, large caches) release.  
+Deprecated!
+All resources( file descriptor, large caches) release.  
 Once cleanUp() called, no more reload or parse sheets.
 	
 * onDemand == true,  
@@ -199,7 +236,7 @@ Once cleanUp() called, no more reload or parse sheets.
 Zero-based index of sheet in workbook.
 	
 #### workbook.sheet.names
-return A list of the names of all the worksheets in the workbook file.  
+return : A list of the names of all the worksheets in the workbook file.  
 This information is available even when no sheets have yet been loaded.
 	
 #### workbook.sheet.byIndex(sheetIndex)
@@ -218,6 +255,12 @@ return : true if sheet is loaded, false otherwise
 sheetId : sheet name or index to be unloaded.
 	
 ### Class : Sheet
+#### Event : 'row'
+
+#### Event : 'done'
+
+#### Event : 'error'
+
 #### sheet.name
 Name of sheet
 	
@@ -256,39 +299,77 @@ return :  a slice of the values of the cells in the given row.
 Nominal number of columns in sheet. It is 1 + the maximum column index found, ignoring trailing empty cells. 
 	
 ## Usage
+### Event Mode : False
 ```js
 var xl = require('node-xlrd');
 
-xl.open('./test.xls', function(err,bk){
-	if(err) {console.log(err.name, err.message); return;}
-	
-	var shtCount = bk.sheet.count;
-	for(var sIdx = 0; sIdx < shtCount; sIdx++ ){
-		console.log('sheet "%d" ', sIdx);
-		console.log('  check loaded : %s', bk.sheet.loaded(sIdx) );
-		var sht = bk.sheets[sIdx],
-			rCount = sht.row.count,
-			cCount = sht.column.count;
-		console.log('  name = %s; index = %d; rowCount = %d; columnCount = %d', sht.name, sIdx, rCount, cCount);
-		for(var rIdx = 0; rIdx < rCount; rIdx++){
-			for(var cIdx = 0; cIdx < cCount; cIdx++){
-				try{
-					console.log('  cell : row = %d, col = %d, value = "%s"', rIdx, cIdx, sht.cell(rIdx,cIdx));
-				}catch(e){
-					console.log(e.message);
-				}
-			}
-		}
-		
-		//save memory
-		//console.log('  try unloading : index %d', sIdx );
-		//if(bk.sheet.loaded(sIdx))
-		//	bk.sheet.unload(sIdx);
-		//console.log('  check loaded : %s', bk.sheet.loaded(sIdx) );
-	}
-	// if onDemand == false, allow function 'workbook.cleanUp()' to be omitted,
-	// because it is called by caller 'node-xlrd.open()' after callback finished.
-	//bk.cleanUp();
+xl.open('./test.xls', function (err, bk) {
+  if (err) {
+    console.log(err.name, err.message);
+    return;
+  }
+
+  var shtCount = bk.sheet.count;
+  for (var sIdx = 0; sIdx < shtCount; sIdx++) {
+    console.log('sheet "%d" ', sIdx);
+    console.log('  check loaded : %s', bk.sheet.loaded(sIdx));
+    var sht = bk.sheets[sIdx],
+      rCount = sht.row.count,
+      cCount = sht.column.count;
+    console.log(
+      '  name = %s; index = %d; rowCount = %d; columnCount = %d',
+      sht.name,
+      sIdx,
+      rCount,
+      cCount
+    );
+    for (var rIdx = 0; rIdx < rCount; rIdx++) {
+      for (var cIdx = 0; cIdx < cCount; cIdx++) {
+        try {
+          console.log(
+            '  cell : row = %d, col = %d, value = "%s"',
+            rIdx,
+            cIdx,
+            sht.cell(rIdx, cIdx)
+          );
+        } catch (e) {
+          console.log(e.message);
+        }
+      }
+    }
+  }
+});
+```
+
+### Event Mode : True, [source file](examples/showBasicEvent.js)
+```js
+var xl = require('../lib/node-xlrd');
+
+var bk = xl.create('./basic.xls', {eventMode: true});
+bk.on('done', function () {
+  console.log('workbook done');
+}).on('error', function (err) {//Workbook event "error" handler should be defined
+  console.log('workbook error');
+  console.log(err.stack);
+}).work(function (err) {
+  if(err) return console.log(err);
+  bk.sheets.forEach(function (sh) {
+    console.log('sheet "%s"', sh.name);
+    sh.on('row', function (rowData) {
+      var txts = [];
+      rowData.values.forEach(function (val, cIdx) {
+        txts.push('[' + cIdx + ']:' + val);
+      });
+      if (txts.length) {
+        console.log('        ' + txts.join(', '));
+      }
+    }).on('done', function (rowCount) {
+      console.log('row count : %d', rowCount);
+    }).on('error', function (err) {
+      console.log('sheet error');
+      console.log(err.stack);
+    });
+  });
 });
 ```
 ## License
