@@ -1,6 +1,14 @@
 # node-xlrd
 node.js's module to extract data from Microsoft Excel™ File(.xls)
 
+## Announcements
+* v1.x.x
+  * status : [release candidates (v1.0.0-rc.x)](https://github.com/gutkyu/node-xlrd/tree/main_v1)
+  * new features and enhancements
+* v0.3.x
+  * stable version
+  * working on bug-fixes
+
 ## Features
 *  porting [python module xlrd](http://www.python-excel.org/) to javascript
 *  pure javascript on node.js
