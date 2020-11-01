@@ -84,5 +84,6 @@ xl.open('./date.xls', {onDemand: true}, function (err, bk) {
     if (bk.sheet.loaded(shtNm)) bk.sheet.unload(shtNm);
     console.log('  check loaded : %s', bk.sheet.loaded(shtNm));
   });
-  bk.cleanUp(); // if onDemand == true, function workbook.cleanUp() should be called.
+  //deprecated
+  //bk.cleanUp(); // if onDemand == true, function workbook.cleanUp() should be called.
 });
