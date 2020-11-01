@@ -19,6 +19,9 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 *  future versions : maybe
 
 ## Changelog
+### 1.0.0-rc.2
+* fixed date parsing errors
+
 ### 1.0.0-rc.1
 * added new features
   * event mode
