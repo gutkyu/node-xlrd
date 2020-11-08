@@ -9,9 +9,11 @@
   "dependencies": {
     "iconv-lite": "~0.6.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^8.2.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/mocha $(find ./test -name '*.js')  --recursive "
   },
   "repository": {
     "type": "git",
