@@ -1,21 +1,18 @@
 var xl = require('../lib/node-xlrd');
 
-xl.open('./basic.xls', function (err, bk) {
+xl.open('./basic.xls', showAllData);
+
+function showAllData(err, bk) {
   if (err) {
     console.log(err.name, err.message);
     return;
   }
-
-  var shtCount = bk.sheet.count;
-  for (var sIdx = 0; sIdx < shtCount; sIdx++) {
-    console.log('sheet "%d" ', sIdx);
-    console.log('  check loaded : %s', bk.sheet.loaded(sIdx));
-    var sht = bk.sheets[sIdx],
-      rCount = sht.row.count,
+  bk.sheets.forEach(function (sht, sIdx) {
+    var rCount = sht.row.count,
       cCount = sht.column.count;
+    console.log('Sheet[%s]', sht.name);
     console.log(
-      '  name = %s; index = %d; rowCount = %d; columnCount = %d',
-      sht.name,
+      '  index : %d, row count : %d, column count : %d',
       sIdx,
       rCount,
       cCount
@@ -24,7 +21,7 @@ xl.open('./basic.xls', function (err, bk) {
       for (var cIdx = 0; cIdx < cCount; cIdx++) {
         try {
           console.log(
-            '  cell : row = %d, col = %d, value = "%s"',
+            '    cell : row = %d, col = %d, value = "%s"',
             rIdx,
             cIdx,
             sht.cell(rIdx, cIdx)
@@ -40,8 +37,8 @@ xl.open('./basic.xls', function (err, bk) {
     //if(bk.sheet.loaded(sIdx))
     //	bk.sheet.unload(sIdx);
     //console.log('  check loaded : %s', bk.sheet.loaded(sIdx) );
-  }
+  });
   // if onDemand == false, allow function 'workbook.cleanUp()' to be omitted,
   // because it is called by caller 'node-xlrd.open()' after callback finished.
   //bk.cleanUp();
-});
+}
