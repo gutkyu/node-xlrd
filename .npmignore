@@ -1,6 +1,7 @@
 .vscode
-examples
+examples/
 .gitignore
 .prettierrc
-Readme.ko.md
+docs/
+test/
 *.log
