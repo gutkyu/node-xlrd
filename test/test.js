@@ -59,7 +59,7 @@ describe('Excel Test', function () {
       assert.strictEqual(sh.rows[2][1], 2000000);
       assert.strictEqual(
         sh.rows[0][2].valueOf(),
-        new Date('2020-11-03T15:00:00.000Z').valueOf()
+        new Date(2020, 10, 4).valueOf() //js Date는 month가 zero-based, 11월 -> js month 10
       ); //date
       //assert.strictEqual(sh.rows[1][2].valueOf());//datetime
       //assert.strictEqual(sh.rows[2][2].valueOf());//time
