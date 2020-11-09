@@ -22,9 +22,18 @@ node.js's module to extract data from Microsoft Excel™ File(.xls)
 *  from v14 to future versions : maybe
 
 ## Changelog
+### 0.3.10
+* modifed a example script
+* fixed biff 7 issues
+  - decode error
+  - parsing issue 
+* set up a test workflow
+* updated Readme
+
 ### 0.3.9
 * fixed date parsing error
 	* when cellType is date, the value of month is incorrect
+
 ### More Changelog
 * [wiki Changelog](https://github.com/gutkyu/node-xlrd/wiki/Changelog)
 	
